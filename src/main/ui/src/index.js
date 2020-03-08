@@ -5,17 +5,21 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import rootReducer from "./reducer/index";
 import {applyMiddleware} from "redux";
-import {createStore} from "redux/es/redux";
 import {Provider} from "react-redux";
 import thunk from "redux-thunk";
 import axios from 'axios';
 import {SnackbarProvider} from 'notistack';
-import {composeWithDevTools} from 'redux-devtools-extension';
 
-const store = createStore( rootReducer, composeWithDevTools(
-    applyMiddleware(thunk),
-));
 
+import {configureStore} from '@reduxjs/toolkit'
+
+// const store = configureSto( rootReducer, composeWithDevTools(
+//     applyMiddleware(thunk),
+// ));
+
+const store = configureStore ({
+    reducer: rootReducer
+})
 
 axios.interceptors.response.use(response => {
     if(response.request.responseURL && response.request.responseURL.includes("/login"))
