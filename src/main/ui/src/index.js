@@ -12,9 +12,12 @@ import axios from 'axios';
 import {SnackbarProvider} from 'notistack';
 import {composeWithDevTools} from 'redux-devtools-extension';
 
-const store = createStore( rootReducer, composeWithDevTools(
-    applyMiddleware(thunk),
-));
+import {configureStore} from '@reduxjs/toolkit'
+
+//*  const store = createStore( rootReducer, composeWithDevTools(
+//*     applyMiddleware(thunk),
+//* ));
+const store = configureStore({reducer: rootReducer});
 
 
 axios.interceptors.response.use(response => {

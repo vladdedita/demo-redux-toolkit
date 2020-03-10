@@ -1,30 +1,38 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { Component, useEffect, useState } from "react";
+import { connect, useDispatch } from "react-redux";
 import { withRouter } from "react-router";
-import { Paper } from "@material-ui/core";
-import { getAllEntries } from "../../action/example";
+import { Paper, Button } from "@material-ui/core";
 
-class Example extends React.Component {
-  componentDidMount() {
-    this.props.getAllEntries();
-  }
-  render() {
-    const entries = this.props.entries;
-    return entries.map(entry => <Paper style= {{height: '3rem', padding:'1rem', width:'40%' ,margin: 'auto'}}>{entry.name}</Paper>);
-  }
-}
+import { useSelector } from "react-redux";
+import { fetchAllEntries, addEntry } from "../../reducer/example/example";
+const Example = () => {
+  const dispatch = useDispatch();
+  const { entries } = useSelector(state => state.example);
+  const [orice, setOrice] = useState(0);
 
-function mapStateToProps(state) {
-  return {
-    entries: state.example.entries
-  };
-}
+  useEffect(() => {
+    dispatch(fetchAllEntries());
+    setOrice(1);
+  },[]);
 
-const mapDispatchToProps = {
-  getAllEntries
+  return (
+    <>
+      <Button onClick={() => dispatch(addEntry("entry"))}>Add entry</Button>
+
+      {entries.map(entry => (
+        <Paper
+          style={{
+            height: "3rem",
+            padding: "1rem",
+            width: "40%",
+            margin: "auto"
+          }}
+        >
+          {entry.name}
+        </Paper>
+      ))}
+    </>
+  );
 };
 
-
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(Example)
-);
+export default withRouter(Example);
